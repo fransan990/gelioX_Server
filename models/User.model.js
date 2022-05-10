@@ -4,7 +4,7 @@ const userSchema = new Schema(
   {
     fullName: {
       type: String,
-      required: [true, 'Indica el nombre completo'],
+      // required: [true, 'Indica el nombre completo'],
       minlength: [4, 'El nombre debe tener mínimo 4 caracteres'],
     },
     username: {
@@ -33,7 +33,8 @@ const userSchema = new Schema(
     },
     role: {
       enum: ["ADMIN", "SUPPLIER", "INFLUENCER", "USER"],
-      default: 'USER'
+      default: "USER",
+      type: String
     },
     img: {
       type: String

@@ -14,14 +14,18 @@ const productSchema = new Schema(
             type: String
         }],
         category: {
-            type: Array
+            type: String,
+            enum: ["sneakers", "apparel"],
+            default: "Nike"
         },
         size: {
-            type: Array
+            type: String,
+            enum: ["XXL", "Xl", "L", "M", "S", "XS"],
+            default: "M"
         },
-        colors: {
-            type: Array
-        },
+        colors: [{
+            type: String,
+        }],
         price: {
             type: Number,
             required: [true, 'El precio es obligatorio']
@@ -34,6 +38,9 @@ const productSchema = new Schema(
             type: Number,
             default: 0
         },
+        favproduct: [{
+            type: String,
+        }],
     },
     {
         timestamps: true
