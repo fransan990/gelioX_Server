@@ -19,7 +19,7 @@ router.get("/getAllProducts", isAuthenticated, (req, res) => {
 //EditProduct
 
 router.get('/:id/editProduct', (req, res) => {
-
+//
     const { id } = req.params
 
     Product
