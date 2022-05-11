@@ -1,14 +1,13 @@
 const router = require("express").Router()
-
 const Product = require('./../models/Product.model')
-
 const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 
 //AllProducts 
 
-router.get("/getAllProducts", isAuthenticated, (req, res) => {
+//Funciona
+router.get("/getAllProducts", (req, res) => {
 
-    console.log("Usuario--", req.payloaad.username)
+    // console.log("Usuario--", req.payloaad.username)
 
     Product
         .find()
@@ -18,18 +17,21 @@ router.get("/getAllProducts", isAuthenticated, (req, res) => {
 
 //EditProduct
 
-router.get('/:id/editProduct', (req, res) => {
-//
+//Funciona
+router.get('/editProduct/:id', (req, res) => {
+
     const { id } = req.params
+    const { title, description, price, stock } = req.body
 
     Product
-        .findById(id)
+        .findByIdAndUpdate(id, { title, description, price, stock })
         .then(response => res.json(response))
         .catch(error => next(error))
 })
 
 //Details
 
+//funciona jeje
 router.get("/getOneProduct/:product_id", (req, res) => {
 
     const { product_id } = req.params
@@ -39,8 +41,9 @@ router.get("/getOneProduct/:product_id", (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-//Save
+//Save -- create
 
+//funciona jeje
 router.post("/saveProduct", (req, res) => {
 
     // meter imagenes y colors!!!!!!!!!!!!!!!!!
@@ -53,6 +56,7 @@ router.post("/saveProduct", (req, res) => {
 })
 //Delete
 
+//funciona jeje
 router.post('/productdelete/:id', (req, res) => {
 
     const { id } = req.params
@@ -62,47 +66,46 @@ router.post('/productdelete/:id', (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-// SaveProduct in Cart
-
-router.post('/savedCart/:idProduct', isAuthenticated, (req, res) => {
+//Like
+// funciona jeje
+router.post('/visitCounter/:id', (req, res) => {
 
     const { id } = req.params
 
     Product
-        .findByIdAndUpdate(_id, { $push: { favProducts: id } })
+        .findByIdAndUpdate(id, { $inc: { visitCounter: 1 } })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-//Like
 
-router.post('/productlike/:id', (req, res) => {
-
-    const { id } = req.params
+router.post('/visitCounter', (req, res) => {
 
     Product
-        .findByIdAndUpdate(id, { $inc: { like: 1 } })
+        .find()
+        .sort({ visitCounter: -1 })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 //Search
-
-router.get('/:form/listProductShearch', (req, res) => {
+// funciona jeje
+router.get('/listProductShearch/:form', (req, res) => {
 
     const { form } = req.params
 
     Product
-        .find({ category: { $regex: '.*' + form + '.*', $options: "i" } })
+        .find({ title: { $regex: '.*' + form + '.*', $options: "i" } })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 // Find Category 
-
-router.get('/:form/listProductCategory', (req, res) => {
-
+//funciona jeje
+router.get('/listProductCategory/:form', (req, res) => {
+    //:form
     const { form } = req.params
 
     Product
         .find({ category: form })
+        // .find({ category: "sneakers" })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })

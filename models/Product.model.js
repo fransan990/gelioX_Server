@@ -34,7 +34,7 @@ const productSchema = new Schema(
             type: Number,
             required: [true, 'El stock es obligatorio']
         },
-        likesCounter: {
+        visitCounter: {
             type: Number,
             default: 0
         },
@@ -48,5 +48,5 @@ const productSchema = new Schema(
 );
 
 const Product = model("Product", productSchema);
-
+Product.syncIndexes()
 module.exports = Product;
