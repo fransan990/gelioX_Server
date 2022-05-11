@@ -26,7 +26,7 @@ router.post('/signup', (req, res, next) => {
         res.status(400).json({ message: 'Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.' })
         return
     }
-    // nuevo proyecto 
+
     User
         .findOne({ email })
         .then((foundUser) => {
@@ -75,7 +75,7 @@ router.post('/login', (req, res, next) => {
 
                 const { _id, email, username } = foundUser;
 
-                const payload = { _id, email, username, role };
+                const payload = { _id, email, username };
 
                 const authToken = jwt.sign(
                     payload,
@@ -98,5 +98,4 @@ router.post('/login', (req, res, next) => {
 router.get('/verify', isAuthenticated, (req, res, next) => {
     res.status(200).json(req.payload)
 })
-
 module.exports = router
