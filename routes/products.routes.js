@@ -3,7 +3,6 @@ const Product = require('./../models/Product.model')
 const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 
 //AllProducts 
-
 //Funciona
 router.get("/getAllProducts", (req, res) => {
 
@@ -14,9 +13,7 @@ router.get("/getAllProducts", (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-
 //EditProduct
-
 //Funciona
 router.get('/editProduct/:id', (req, res) => {
 
@@ -28,9 +25,7 @@ router.get('/editProduct/:id', (req, res) => {
         .then(response => res.json(response))
         .catch(error => next(error))
 })
-
 //Details
-
 //funciona jeje
 router.get("/getOneProduct/:product_id", (req, res) => {
 
@@ -42,20 +37,18 @@ router.get("/getOneProduct/:product_id", (req, res) => {
         .catch(err => res.status(500).json(err))
 })
 //Save -- create
-
 //funciona jeje
 router.post("/saveProduct", (req, res) => {
 
     // meter imagenes y colors!!!!!!!!!!!!!!!!!
-    const { title, description, category, size, price, stock } = req.body
+    const { title, description, imageUrl, category, size, colors, price, stock } = req.body
 
     Product
-        .create({ title, description, category, size, price, stock })
+        .create({ title, description, imageUrl, category, size, colors, price, stock })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
 //Delete
-
 //funciona jeje
 router.post('/productdelete/:id', (req, res) => {
 

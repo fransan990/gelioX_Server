@@ -3,9 +3,6 @@ const app = require("../app");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 const Comment = require('../models/Comment.model');
 
-
-//testear con guille todas las de los comentarios
-
 // funciona jeje
 router.post("/createComment/:id", (req, res, next) => {
 
@@ -20,7 +17,6 @@ router.post("/createComment/:id", (req, res, next) => {
 
 });
 //edit comment
-
 //funciona jeje
 router.post('/edit/:id', (req, res) => {
 
@@ -32,9 +28,7 @@ router.post('/edit/:id', (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-
 //delete comment
-
 //Tiene que ser Admin
 
 router.post('/delete/:id', (req, res) => {

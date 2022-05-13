@@ -21,5 +21,6 @@ const orderSchema = new Schema(
 );
 
 const Order = model("Order", orderSchema);
+Order.syncIndexes()
 
 module.exports = Order;

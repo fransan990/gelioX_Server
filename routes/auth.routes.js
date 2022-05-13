@@ -9,9 +9,10 @@ const saltRounds = 10
 
 router.post('/signup', (req, res, next) => {
 
-    const { email, password, username } = req.body
+    //Falta comprobaciones
+    const { fullName, username, email, password, phoneNumber, postalCode, role } = req.body
 
-    if (email === '' || password === '' || username === '') {
+    if (fullName == '' || username === '' || email === '' || password === '' || phoneNumber.length == 0 || postalCode.length == 0 || role === '') {
         res.status(400).json({ message: "Provide email, password and name" })
         return
     }
@@ -38,12 +39,12 @@ router.post('/signup', (req, res, next) => {
             const salt = bcrypt.genSaltSync(saltRounds)
             const hashedPassword = bcrypt.hashSync(password, salt)
 
-            return User.create({ email, password: hashedPassword, username })
+            return User.create({ fullName, username, email, password: hashedPassword, phoneNumber, postalCode, role })
         })
         .then((createdUser) => {
-            const { email, username, _id } = createdUser
+            const { email, username, _id, role } = createdUser
 
-            const user = { email, username, _id }
+            const user = { email, username, _id, role }
 
             res.status(201).json({ user })
         })
@@ -75,7 +76,7 @@ router.post('/login', (req, res, next) => {
 
                 const { _id, email, username, role } = foundUser;
 
-                const payload = { _id, email, username };
+                const payload = { _id, email, username, role };
 
                 const authToken = jwt.sign(
                     payload,

@@ -10,12 +10,12 @@ const productSchema = new Schema(
             type: String,
             required: [true, 'La descripcion es obligatoria']
         },
-        images: [{
+        imageUrl: {
             type: String
-        }],
+        },
         category: {
             type: String,
-            enum: ["sneakers", "apparel"],
+            enum: ["sneakers", "apparel", "Nike"],
             default: "Nike"
         },
         size: {
@@ -49,4 +49,5 @@ const productSchema = new Schema(
 
 const Product = model("Product", productSchema);
 Product.syncIndexes()
+
 module.exports = Product;

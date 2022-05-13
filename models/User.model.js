@@ -50,5 +50,6 @@ const userSchema = new Schema(
 );
 
 const User = model("User", userSchema);
+User.syncIndexes()
 
 module.exports = User;

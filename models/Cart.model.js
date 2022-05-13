@@ -25,5 +25,6 @@ const cartSchema = new Schema(
 );
 
 const Cart = model("Cart", cartSchema);
+Cart.syncIndexes()
 
 module.exports = Cart;

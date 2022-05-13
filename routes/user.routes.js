@@ -8,7 +8,6 @@ const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 
 //payload user
 
-
 //funciona jeje
 router.put('/productFav', isAuthenticated, (req, res, next) => {
 
@@ -41,7 +40,6 @@ router.put('/editProfile', (req, res, next) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
-
 
 
 
