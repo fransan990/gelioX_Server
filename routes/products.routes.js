@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const Product = require('./../models/Product.model')
 const { isAuthenticated } = require('./../middlewares/jwt.middleware')
+const User = require("../models/User.model")
 
 //AllProducts 
 //Funciona
@@ -81,23 +82,52 @@ router.post('/visitCounter', (req, res) => {
 })
 //Search
 // funciona jeje
-router.get('/listProductShearch/:form', (req, res) => {
+router.get('/listProductSearch', (req, res) => {
 
-    const { form } = req.params
+    const { query } = req.query
+    console.log('el form del serverrrrrrrrr bitch------->', req.params)
 
-    Product
-        .find({ title: { $regex: '.*' + form + '.*', $options: "i" } })
+    if (query === '') {
+
+        console.log('tengo que buscar todoooooosooooos')
+        Product
+            .find()
+            .then(response => res.json(response))
+            .catch(err => res.status(500).json(err))
+    } else {
+        Product
+            .find({ title: { $regex: '.*' + query + '.*', $options: "i" } })
+            .then(response => res.json(response))
+            .catch(err => res.status(500).json(err))
+    }
+
+})
+
+
+router.post('/:id/productFav', isAuthenticated, (req, res, next) => {
+    // res.send("hola")
+
+    const { id } = req.params
+    const { _id } = req.payload
+
+    User
+        .findByIdAndUpdate(_id, { $addToSet: { favProducts: id } })
         .then(response => res.json(response))
-        .catch(err => res.status(500).json(err))
+        .catch(error => next(error))
 })
 // Find Category 
 //funciona jeje
-router.get('/listProductCategory/:form', (req, res) => {
+
+//hacer ruta global
+router.get('/listProductSize/:form', (req, res) => {
     //:form
     const { form } = req.params
 
+    const { buscado } = req.body
+    const { buscador } = req.body
+
     Product
-        .find({ category: form })
+        .find({ size: form })
         // .find({ category: "sneakers" })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
