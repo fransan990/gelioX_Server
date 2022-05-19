@@ -7,8 +7,6 @@ const User = require("../models/User.model")
 //Funciona
 router.get("/getAllProducts", (req, res) => {
 
-    // console.log("Usuario--", req.payloaad.username)
-
     Product
         .find()
         .then(response => res.json(response))
@@ -80,43 +78,19 @@ router.post('/visitCounter', (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
 //Search
-// funciona jeje
 router.get('/listProductSearch', (req, res) => {
 
-    const { form, size, category } = req.query
-    console.log('esta es la mierda que llega al server ---------->', req.query)
-    // console.log('el form server ------->', form)
-    // console.log('el size server ------->', size)
-    // console.log('la category server ------->', category)
+    const { string, size, category } = req.query
 
+    console.log('EL SIZE', size)
 
-
-    if (form === '' && size === '' && category == '') {
-
-        console.log('tengo que buscar todoooooosooooos')
-        Product
-            .find()
-            .then(response => {
-                res.json(response)
-
-
-            })
-            .catch(err => res.status(500).json(err))
-    } else {
-        console.log('Else')
-
-
-        Product
-            .find({ $or: [{ title: { $regex: '.*' + form + '.*', $options: "i" } }, { size: size }, { category: { $regex: '.*' + category + '.*', $options: "i" } }] })
-            .then(response => {
-                res.json(response)
-                console.log('popino')
-
-            })
-            .catch(err => res.status(500).json(err))
-    }
-
+    Product
+        .find({ $or: [{ title: { $regex: '.*' + string + '.*', $options: "i" } }, { $and: [{ size: size }, { category: { $regex: '.*' + category + '.*', $options: "i" } }] }] })
+        // .find({ $and: [{ title: { $regex: '.*' + string + '.*', $options: "i" } }, { size }] })
+        .then(response => res.json(response))
+        .catch(err => res.status(500).json(err))
 })
 
 

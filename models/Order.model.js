@@ -7,8 +7,10 @@ const orderSchema = new Schema(
             ref: 'Cart',
         },
         address: {
-            type: Object,
-            required: true
+            address1: String,
+            address2: String,
+            postalCode: Number,
+            city: String
         },
         // status: {
         //     type: String,

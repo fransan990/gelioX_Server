@@ -42,10 +42,11 @@ router.post('/signup', (req, res, next) => {
 
             return User.create({ fullName, username, email, password: hashedPassword, phoneNumber, postalCode, role })
         })
-       .then((createdUser) => {
+        .then((createdUser) => {
             const { email, username, _id, role } = createdUser
-            Cart
-                .create({owner: _id, items:[]})          
+
+            Cart.create({ owner: _id, items: [] })
+
             const user = { email, username, _id, role }
 
             res.status(201).json({ user })

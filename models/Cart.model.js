@@ -18,13 +18,19 @@ const cartSchema = new Schema(
                 },
             },
         ],
+        status: {
+            type: String,
+            enum: ['ACTIVE', 'ORDERED'],
+            default: 'ACTIVE'
+        }
     },
     {
         timestamps: true
     }
 );
 
-const Cart = model("Cart", cartSchema);
+const Cart = model("Cart", cartSchema)
+
 Cart.syncIndexes()
 
-module.exports = Cart;
+module.exports = Cart
