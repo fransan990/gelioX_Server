@@ -9,15 +9,28 @@ const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 //payload user
 
 //funciona jeje
-router.put('/productFav', isAuthenticated, (req, res, next) => {
 
-    // deberías sacar el id del usuario del req.payload
-    // const {_id} = req.payload
+// router.put('/productFav', isAuthenticated, (req, res, next) => {
 
-    const owner = req.payload._id
+//     // deberías sacar el id del usuario del req.payload
+//     // const {_id} = req.payload
+
+//     const owner = req.payload._id
+
+//     User
+//         .findByIdAndUpdate(owner, { $addToSet: { favProducts: id } }, { new: true })
+//         .then(response => res.json(response))
+//         .catch(err => res.status(500).json(err))
+// })
+
+// Get user details
+router.get('/profile', isAuthenticated, (req, res, next) => {
+
+    const { _id } = req.payload
 
     User
-        .findByIdAndUpdate(owner, { $addToSet: { favProducts: id } }, { new: true })
+        .findById(_id)
+        .populate('favProducts')
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
