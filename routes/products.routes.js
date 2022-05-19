@@ -84,20 +84,36 @@ router.post('/visitCounter', (req, res) => {
 // funciona jeje
 router.get('/listProductSearch', (req, res) => {
 
-    const { query } = req.query
-    console.log('el form del serverrrrrrrrr bitch------->', req.params)
+    const { form, size, category } = req.query
+    console.log('esta es la mierda que llega al server ---------->', req.query)
+    // console.log('el form server ------->', form)
+    // console.log('el size server ------->', size)
+    // console.log('la category server ------->', category)
 
-    if (query === '') {
+
+
+    if (form === '' && size === '' && category == '') {
 
         console.log('tengo que buscar todoooooosooooos')
         Product
             .find()
-            .then(response => res.json(response))
+            .then(response => {
+                res.json(response)
+
+
+            })
             .catch(err => res.status(500).json(err))
     } else {
+        console.log('Else')
+
+
         Product
-            .find({ title: { $regex: '.*' + query + '.*', $options: "i" } })
-            .then(response => res.json(response))
+            .find({ $or: [{ title: { $regex: '.*' + form + '.*', $options: "i" } }, { size: size }, { category: { $regex: '.*' + category + '.*', $options: "i" } }] })
+            .then(response => {
+                res.json(response)
+                console.log('popino')
+
+            })
             .catch(err => res.status(500).json(err))
     }
 
