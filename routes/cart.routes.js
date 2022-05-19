@@ -8,49 +8,63 @@ const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 const { find } = require("./../models/Cart.model")
 
 //create cart
-router.post("/createCart", isAuthenticated, (req, res, next) => {
+router.get("/getCart", isAuthenticated, (req, res, next) => {
 
-    const owner = req.payload._id
+    const { _id } = req.payload
 
     Cart
-        .create({ owner })
-        .then(newCart => res.json(newCart._id))
+        .find({ owner: _id })
+        .then(carritobacano => res.json(carritobacano))
         .catch(err => res.status(500).json(err))
 })
 
 //add item
 router.post("/addItem", isAuthenticated, (req, res, next) => {
 
-    const { cartId, productId, productQuantity } = req.body
+    const { _id } = req.payload
+    const { productId, productQuantity } = req.body
 
     Cart
-        .findById(cartId)
-        .then(response => {
-            response.items.forEach(item => {
-                if (item.product == productId) {
-                    item.quantity+=parseInt(productQuantity)
-                } else {
-                    response.items.push({ product: productId, quantity: productQuantity})
-                }
-            });
-            return response.save()
+        .findOne({ owner: _id })
+        // .then(response => {
+        //     response.items.forEach(item => {
+        //         if (item.product == productId) {
+        //             item.quantity += parseInt(productQuantity)
+        //         } else {
+        //             response.items.push({ product: productId, quantity: productQuantity })
+        //         }
+        //     });
+        //     return response.save()
+        // })
+
+        .then(({ _id }) => {
+
+            return Cart.findByIdAndUpdate(_id, { $push: { items: { product: productId, quantity: productQuantity } } }, { new: true })
         })
-        .then(response => res.json(response))
+        .then(newCart => res.json(newCart))
         .catch(err => res.status(500).json(err))
 })
+
+//implementar si el product ya esta en el carrito, que solo sume la quantity
 
 //update quantity
 router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
 
-    const { cartId, productId, productQuantity } = req.body
+    const { _id } = req.payload
+    const { productId, newQuantity } = req.body
+
+    console.log(req.body)
 
     Cart
-        .findById(cartId)
+        .findOne({ owner: _id })
         .then(response => {
+            console.log("HERE", newQuantity)
+            console.log("HERE2", response)
             response.items.forEach(item => {
                 if (item.product == productId) {
-                    item.quantity = productQuantity
+                    item.quantity = newQuantity
                 }
+                console.log(item.quantity)
             });
             return response.save()
         })
@@ -59,15 +73,20 @@ router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
 })
 
 //deleteItem
-router.delete("/deleteItem", isAuthenticated, (req, res, next) => {
+router.put("/deleteItem", isAuthenticated, (req, res, next) => {
 
-    const { cartId, itemId } = req.body
+    const { _id } = req.payload
+    console.log(_id)
+    const { productId } = req.body
+    console.log(req.body)
+    console.log(productId)
+    
 
     Cart
-        .findById(cartId)
+        .findOne({ owner: _id })
         .then(response => {
             response.items.forEach((item, idx) => {
-                if (item._id == itemId) {
+                if (item.product == productId) {
                     response.items.splice(idx, 1)
                 }
             });
@@ -80,12 +99,13 @@ router.delete("/deleteItem", isAuthenticated, (req, res, next) => {
 //getAllItems
 router.get("/getAllItems", isAuthenticated, (req, res, next) => {
 
-    const { cartId } = req.body
+    const { _id } = req.payload
 
     Cart
-        .findById(cartId)
-        .then(cart => {
-            res.json(cart.items)
+        .findOne({ owner: _id })
+        .populate('items.product')
+        .then(({ items }) => {
+            res.json(items)
         })
         .catch(err => res.status(500).json(err))
 })

@@ -42,7 +42,7 @@ const userSchema = new Schema(
     favProducts: [{
       type: Schema.Types.ObjectId,
       ref: 'Product'
-    }],
+    }]
   },
   {
     timestamps: true

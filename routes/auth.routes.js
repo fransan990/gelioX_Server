@@ -1,6 +1,7 @@
 const express = require("express")
 const bcrypt = require('bcryptjs')
 const User = require("../models/User.model")
+const Cart = require("../models/Cart.model")
 const jwt = require('jsonwebtoken')
 const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 
@@ -41,9 +42,10 @@ router.post('/signup', (req, res, next) => {
 
             return User.create({ fullName, username, email, password: hashedPassword, phoneNumber, postalCode, role })
         })
-        .then((createdUser) => {
+       .then((createdUser) => {
             const { email, username, _id, role } = createdUser
-
+            Cart
+                .create({owner: _id, items:[]})          
             const user = { email, username, _id, role }
 
             res.status(201).json({ user })
