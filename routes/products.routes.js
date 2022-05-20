@@ -63,10 +63,14 @@ router.post('/productdelete/:id', (req, res) => {
 router.post('/visitCounter/:id', (req, res) => {
 
     const { id } = req.params
+    console.log('el reqbody----->', id)
 
     Product
-        .findByIdAndUpdate(id, { $inc: { visitCounter: 1 } })
-        .then(response => res.json(response))
+        .findByIdAndUpdate(id, { $inc: { visitCounter: 1 } }, { new: true })
+        .then(response => {
+            res.json(response)
+            console.log(response)
+        })
         .catch(err => res.status(500).json(err))
 })
 
@@ -101,12 +105,28 @@ router.post('/:id/productFav', isAuthenticated, (req, res, next) => {
     const { _id } = req.payload
 
     User
-        .findByIdAndUpdate(_id, { $addToSet: { favProducts: id } })
+        .findByIdAndUpdate(_id, { $addToSet: { favProducts: id } }, { new: true })
         .then(response => res.json(response))
         .catch(error => next(error))
 })
 // Find Category 
 //funciona jeje
+
+router.post('/:id/productUnFav', isAuthenticated, (req, res, next) => {
+    // res.send("hola")
+
+    const { id } = req.params
+    const { _id } = req.payload
+    console.log('holaaaaaaaaa')
+
+    User
+        .findByIdAndUpdate(_id, { $pull: { favProducts: id } }, { new: true })
+        .then(response => res.json(response))
+        .catch(error => next(error))
+})
+// Find Category 
+//funciona jeje
+
 
 //hacer ruta global
 router.get('/listProductSize/:form', (req, res) => {

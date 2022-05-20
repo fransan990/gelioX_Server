@@ -10,7 +10,9 @@ const commentSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Product'
         },
-        description: String
+        description: {
+            type: String
+        }
     },
     {
         timestamps: true
