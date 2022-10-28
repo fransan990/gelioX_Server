@@ -15,7 +15,7 @@ router.get('/profile', isAuthenticated, (req, res, next) => {
         .catch(err => res.status(500).json(err))
 })
 
-// Editar perfil
+// Edit Profile
 
 router.put('/editProfile', (req, res, next) => {
 
