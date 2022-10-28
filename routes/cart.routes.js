@@ -39,8 +39,6 @@ router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
     const { _id } = req.payload
     const { productId, newQuantity } = req.body
 
-    console.log(req.body)
-
     Cart
         .findOne({ owner: _id, status: 'ACTIVE' })
         .then(response => {
