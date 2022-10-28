@@ -10,7 +10,6 @@ const saltRounds = 10
 
 router.post('/signup', (req, res, next) => {
 
-    //Falta comprobaciones
     const { fullName, username, email, password, phoneNumber, postalCode, role } = req.body
 
     if (fullName == '' || username === '' || email === '' || password === '' || phoneNumber.length == 0 || postalCode.length == 0 || role === '') {
@@ -56,7 +55,6 @@ router.post('/signup', (req, res, next) => {
             res.status(500).json({ message: "Internal Server Error" })
         })
 })
-// http://localhost:5005/api/auth/6258585153da9b7a4a4079ff/productFav------ prueba postman
 
 router.post('/login', (req, res, next) => {
     const { email, password } = req.body;

@@ -4,7 +4,6 @@ const userSchema = new Schema(
   {
     fullName: {
       type: String,
-      // required: [true, 'Indica el nombre completo'],
       minlength: [4, 'El nombre debe tener mínimo 4 caracteres'],
     },
     username: {

@@ -26,17 +26,6 @@ router.post("/addItem", isAuthenticated, (req, res, next) => {
 
     Cart
         .findOne({ owner: _id, status: 'ACTIVE' })
-        // .then(response => {
-        //     response.items.forEach(item => {
-        //         if (item.product == productId) {
-        //             item.quantity += parseInt(productQuantity)
-        //         } else {
-        //             response.items.push({ product: productId, quantity: productQuantity })
-        //         }
-        //     });
-        //     return response.save()
-        // })
-
         .then(({ _id }) => {
 
             return Cart.findByIdAndUpdate(_id, { $push: { items: { product: productId, quantity: productQuantity } } }, { new: true })
@@ -44,8 +33,6 @@ router.post("/addItem", isAuthenticated, (req, res, next) => {
         .then(newCart => res.json(newCart))
         .catch(err => res.status(500).json(err))
 })
-
-//implementar si el product ya esta en el carrito, que solo sume la quantity
 
 //update quantity
 router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
@@ -58,13 +45,10 @@ router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
     Cart
         .findOne({ owner: _id, status: 'ACTIVE' })
         .then(response => {
-            console.log("HERE", newQuantity)
-            console.log("HERE2", response)
             response.items.forEach(item => {
                 if (item.product == productId) {
                     item.quantity = newQuantity
                 }
-                console.log(item.quantity)
             });
             return response.save()
         })
@@ -76,11 +60,7 @@ router.put("/updateQuantity", isAuthenticated, (req, res, next) => {
 router.put("/deleteItem", isAuthenticated, (req, res, next) => {
 
     const { _id } = req.payload
-    console.log(_id)
     const { productId } = req.body
-    console.log(req.body)
-    console.log(productId)
-
 
     Cart
         .findOne({ owner: _id, status: 'ACTIVE' })

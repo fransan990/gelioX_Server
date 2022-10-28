@@ -12,10 +12,6 @@ const orderSchema = new Schema(
             postalCode: Number,
             city: String
         },
-        // status: {
-        //     type: String,
-        //     default: "pending"
-        // }, ------------------------Nose si meterlo
     },
     {
         timestamps: true

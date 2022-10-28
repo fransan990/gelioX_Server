@@ -4,7 +4,6 @@ const { isAuthenticated } = require('./../middlewares/jwt.middleware')
 const User = require("../models/User.model")
 
 //AllProducts 
-//Funciona
 router.get("/getAllProducts", (req, res) => {
 
     Product
@@ -12,8 +11,8 @@ router.get("/getAllProducts", (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
 //EditProduct
-//Funciona
 router.get('/editProduct/:id', (req, res) => {
 
     const { id } = req.params
@@ -24,8 +23,8 @@ router.get('/editProduct/:id', (req, res) => {
         .then(response => res.json(response))
         .catch(error => next(error))
 })
+
 //Details
-//funciona jeje
 router.get("/getOneProduct/:product_id", (req, res) => {
 
     const { product_id } = req.params
@@ -35,20 +34,19 @@ router.get("/getOneProduct/:product_id", (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
 //Save -- create
-//funciona jeje
 router.post("/saveProduct", (req, res) => {
 
-    // meter imagenes y colors!!!!!!!!!!!!!!!!!
     const { title, description, imageUrl, category, size, colors, price, stock } = req.body
-
+    console.log(title, description, imageUrl, category, size, colors, price, stock)
     Product
         .create({ title, description, imageUrl, category, size, colors, price, stock })
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
 //Delete
-//funciona jeje
 router.post('/productdelete/:id', (req, res) => {
 
     const { id } = req.params
@@ -58,22 +56,21 @@ router.post('/productdelete/:id', (req, res) => {
         .then(response => res.json(response))
         .catch(err => res.status(500).json(err))
 })
+
 //Like
-// funciona jeje
 router.post('/visitCounter/:id', (req, res) => {
 
     const { id } = req.params
-    console.log('el reqbody----->', id)
 
     Product
         .findByIdAndUpdate(id, { $inc: { visitCounter: 1 } }, { new: true })
         .then(response => {
             res.json(response)
-            console.log(response)
         })
         .catch(err => res.status(500).json(err))
 })
 
+//Counter Visit
 router.post('/visitCounter', (req, res) => {
 
     Product
@@ -88,7 +85,6 @@ router.get('/listProductSearch', (req, res) => {
 
     const { string, size, category } = req.query
 
-    console.log('EL SIZE', size)
 
     Product
         .find({ $or: [{ title: { $regex: '.*' + string + '.*', $options: "i" } }, { $and: [{ size: size }, { category: { $regex: '.*' + category + '.*', $options: "i" } }] }] })
@@ -99,7 +95,6 @@ router.get('/listProductSearch', (req, res) => {
 
 
 router.post('/:id/productFav', isAuthenticated, (req, res, next) => {
-    // res.send("hola")
 
     const { id } = req.params
     const { _id } = req.payload
@@ -109,32 +104,23 @@ router.post('/:id/productFav', isAuthenticated, (req, res, next) => {
         .then(response => res.json(response))
         .catch(error => next(error))
 })
-// Find Category 
-//funciona jeje
 
+// Find Category 
 router.post('/:id/productUnFav', isAuthenticated, (req, res, next) => {
-    // res.send("hola")
 
     const { id } = req.params
     const { _id } = req.payload
-    console.log('holaaaaaaaaa')
 
     User
         .findByIdAndUpdate(_id, { $pull: { favProducts: id } }, { new: true })
         .then(response => res.json(response))
         .catch(error => next(error))
 })
+
 // Find Category 
-//funciona jeje
-
-
-//hacer ruta global
 router.get('/listProductSize/:form', (req, res) => {
-    //:form
-    const { form } = req.params
 
-    const { buscado } = req.body
-    const { buscador } = req.body
+    const { form } = req.params
 
     Product
         .find({ size: form })
