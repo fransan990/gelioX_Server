@@ -13,4 +13,11 @@ app.use("/api", allRoutes);
 
 require("./error-handling")(app);
 
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL,
+        credentials: true
+    })
+);
+
 module.exports = app;
