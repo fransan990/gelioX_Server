@@ -9,7 +9,7 @@ const cors = require('cors')
 
 require("./config")(app);
 
-// En caso de querer probar en local quitar esto 
+// cors para el deploy en netlify en caso de probar en local comentar
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,

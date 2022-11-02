@@ -4,6 +4,13 @@
 
 ## TEST OUR WEB
 
+<p>netlify (Front-End)</p>
+<a href="https://geliox.netlify.app/" target="_blank" rel="noreferrer"> 
+ <p>gelioX</p>
+</a>
+
+<p>Glitch (Back-End)</p>
+
 ## ABOUT
 
 <p> Web application in which users can see all the products created by themselves and by the community and search for any other product or save it in the shopping cart to buy it later. They can also save the products they like the most in their profiles so they can buy them later and they can also like the products they have liked. </p>
