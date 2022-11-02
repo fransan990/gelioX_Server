@@ -6,6 +6,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.29.1",

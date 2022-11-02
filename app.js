@@ -5,10 +5,11 @@ require("./db");
 const express = require("express");
 
 const app = express();
-var cors = require('cors')
+const cors = require('cors')
 
 require("./config")(app);
 
+// En caso de querer probar en local quitar esto 
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,
