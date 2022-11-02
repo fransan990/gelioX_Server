@@ -5,13 +5,9 @@ require("./db");
 const express = require("express");
 
 const app = express();
+var cors = require('cors')
 
 require("./config")(app);
-
-const allRoutes = require("./routes/index.routes");
-app.use("/api", allRoutes);
-
-require("./error-handling")(app);
 
 app.use(
     cors({
@@ -19,5 +15,10 @@ app.use(
         credentials: true
     })
 );
+
+const allRoutes = require("./routes/index.routes");
+app.use("/api", allRoutes);
+
+require("./error-handling")(app);
 
 module.exports = app;
